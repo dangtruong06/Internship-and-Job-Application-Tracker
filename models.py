@@ -3,6 +3,7 @@ from sqlalchemy.orm import DeclarativeBase, relationship, Mapped, mapped_column
 from sqlalchemy import Integer, String, Text, ForeignKey
 from typing import List, Optional
 from datetime import date
+import bcrypt
 
 class Base(DeclarativeBase):
     pass   
@@ -18,6 +19,17 @@ class User(db.Model):
 
     # Establish relationship between one user and many jobs
     jobs:Mapped[List['Job']] = relationship(back_populates='user')
+
+    # Hash password
+    def set_password(self, password):
+        self.password_hash = bcrypt.hashpw(
+            password.encode('utf-8'),
+            bcrypt.gensalt()).decode('utf-8')
+    
+    def check_password(self, password):
+        return bcrypt.checkpw(
+            password.encode('utf-8'), 
+            self.password_hash.encode('utf-8'))
 
 class Job(db.Model):
     __tablename__ = 'jobs'
