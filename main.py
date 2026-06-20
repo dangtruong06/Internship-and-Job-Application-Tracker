@@ -1,7 +1,8 @@
 from flask import Flask, render_template
 from models import db, User, Job
-from forms import Register
+from forms import Register, Login
 from dotenv import load_dotenv
+from flask_login import LoginManager, login_user, logout_user, current_user
 import os
 
 load_dotenv()
@@ -12,6 +13,14 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 # DB SETUP
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 db.init_app(app)
+
+# LOG IN MANAGER
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return db.session.get(User,int(user_id))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -27,6 +36,22 @@ def register():
         return 'Success'
     
     return 'Register Page'
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = Login()
+    if form.validate_on_submit():
+        user = db.session.execute(db.select(User).where(User.email == form.email.data)).scalar()
+
+        if not user:
+            print('User does not exist')
+        elif not user.check_password(form.password.data):
+            print('Incorrect password')
+        else:
+            login_user(user)
+            return 'Log in successful'
+    
+    return 'Log in page'
 
 @app.route('/')
 def home():

@@ -3,6 +3,7 @@ from sqlalchemy.orm import DeclarativeBase, relationship, Mapped, mapped_column
 from sqlalchemy import Integer, String, Text, ForeignKey
 from typing import List, Optional
 from datetime import date
+from flask_login import UserMixin
 import bcrypt
 
 class Base(DeclarativeBase):
@@ -10,7 +11,7 @@ class Base(DeclarativeBase):
 
 db = SQLAlchemy(model_class=Base)
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id:Mapped[int] = mapped_column(Integer, primary_key=True)
     name:Mapped[str] = mapped_column(String(250), nullable=False)
