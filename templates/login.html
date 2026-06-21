@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}Login - Appli{% endblock %}
+
+
+{% block content %}
+<div class="row justify-content-center align-items-center" style="min-height: 90vh;">
+  <div class="col-md-4 col-lg-3">
+    <div class="p-4 rounded-3" style="background: #1e293b; border: 0.5px solid #334155;">
+      
+      <!-- Icon and heading -->
+      <div class="text-center py-3">
+        <h5 class="fw-semibold mb-1" style="color: #f8fafc;">Welcome back</h5>
+        <p class="mb-0" style="color: #64748b; font-size: 0.875rem;">Log in to your account</p>
+      </div>
+
+      <!-- Form -->
+      <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <div class="mb-3">
+          {{ form.email.label(class='form-label', style='color: #94a3b8; font-size: 1rem;') }}
+          {{ form.email(class='form-control', placeholder='you@email.com',
+             style='background: #0f172a; border: 0.5px solid #334155; color: #f8fafc;') }}
+
+        </div>
+
+        <div class="mb-4">
+          {{ form.password.label(class='form-label', style='color: #94a3b8; font-size: 1rem;') }}
+          {{ form.password(class='form-control', placeholder='Your password',
+             style='background: #0f172a; border: 0.5px solid #334155; color: #f8fafc;') }}
+             
+        </div>
+
+        <button type="submit" class="btn w-100 fw-semibold"
+                style="background: #60a5fa; color: #0f172a;">
+          Log in
+        </button>
+      </form>
+
+      <p class="text-center mt-3 mb-0" style="color: #64748b; font-size: 0.875rem;">
+        No account?
+        <a href="{{ url_for('register') }}" style="color: #60a5fa; text-decoration: none;">Register</a>
+      </p>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

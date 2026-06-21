@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for, flash
 from models import db, User, Job
 from forms import Register, Login
 from dotenv import load_dotenv
@@ -33,9 +33,11 @@ def register():
         db.session.add(new_user)
         db.session.commit()
 
-        return 'Success'
+        login_user(new_user)
+
+        return redirect(url_for('home'))
     
-    return 'Register Page'
+    return render_template('register.html', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -44,18 +46,23 @@ def login():
         user = db.session.execute(db.select(User).where(User.email == form.email.data)).scalar()
 
         if not user:
-            print('User does not exist')
+            flash('User does not exist', 'danger')
         elif not user.check_password(form.password.data):
-            print('Incorrect password')
+            flash('Incorrect password', 'danger')
         else:
             login_user(user)
-            return 'Log in successful'
+            return redirect(url_for('home'))
     
-    return 'Log in page'
+    return render_template('login.html', form=form)
 
 @app.route('/')
 def home():
-    return 'HELLO WORLD'
+    return render_template('index.html')
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('home'))
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
