@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block title %}Register - Appli{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center" style="min-height: 80vh">
+    <div class="col-md-9 col-lg-7">
+      <div class="rounded-3 overflow-hidden d-flex" style="border: 0.5px solid #334155; min-height: 480px;">
+  
+        <!-- Left panel -->
+        <div class="d-none d-md-flex flex-column justify-content-center p-4"
+             style="width: 40%; background: linear-gradient(160deg, #1e3a5f, #0f172a); border-right: 0.5px solid #1e293b;">
+          <i class="bi bi-calendar-check mb-3" style="color: #60a5fa; font-size: 2rem;"></i>
+          <h2 class="fw-semibold mb-2" style="color: #f8fafc; font-size: 1.2rem;">
+            Track every application
+          </h2>
+          <p style="color: #64748b; font-size: 0.875rem; line-height: 1.6;">
+            Stay organized through your entire job search. Know where you stand at every stage.
+          </p>
+  
+          <hr style="border-color: #1e293b; margin: 1.5rem 0;">
+  
+          <div class="d-flex flex-column gap-2">
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-check-circle-fill" style="color: #60a5fa; font-size: 0.875rem;"></i>
+              <span style="color: #94a3b8; font-size: 0.8rem;">Track application status</span>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-check-circle-fill" style="color: #60a5fa; font-size: 0.875rem;"></i>
+              <span style="color: #94a3b8; font-size: 0.8rem;">Add notes and deadlines</span>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-check-circle-fill" style="color: #60a5fa; font-size: 0.875rem;"></i>
+              <span style="color: #94a3b8; font-size: 0.8rem;">See your progress at a glance</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex-fill p-4 p-md-5 d-flex flex-column justify-content-center"
+        style="background: #1e293b;">
+        <h3 class="fw-semibold mb-1" style="color: #f8fafc;">Create account</h3>
+        <p class="mb-4" style="color: #64748b; font-size: 0.875rem;">
+        Start tracking your internship search
+        </p>
+        
+        <form method="POST">
+            {{ form.hidden_tag() }}
+  
+            <div class="mb-3">
+              {{ form.name.label(class='form-label', style='color: #94a3b8; font-size: 0.875rem;') }}
+              {{ form.name(class='form-control', placeholder='John Doe',
+                 style='background: #0f172a; border: 0.5px solid #334155; color: #f8fafc;') }}
+
+            </div>
+  
+            <div class="mb-3">
+              {{ form.email.label(class='form-label', style='color: #94a3b8; font-size: 0.875rem;') }}
+              {{ form.email(class='form-control', placeholder='john.doe@email.com',
+                 style='background: #0f172a; border: 0.5px solid #334155; color: #f8fafc;') }}
+
+            </div>
+  
+            <div class="mb-3">
+              {{ form.password.label(class='form-label', style='color: #94a3b8; font-size: 0.875rem;') }}
+              {{ form.password(class='form-control', placeholder='Min. 8 characters',
+                 style='background: #0f172a; border: 0.5px solid #334155; color: #f8fafc;') }}
+
+
+            </div>
+  
+            <button type="submit" class="btn w-100 fw-semibold"
+                    style="background: #60a5fa; color: #0f172a;">
+              Create account
+            </button>
+          </form>
+  
+          <p class="text-center mt-3" style="color: #64748b; font-size: 0.875rem;">
+            Already have an account?
+            <a href="{{ url_for('login') }}" style="color: #60a5fa; text-decoration: none;">Log in</a>
+          </p>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
