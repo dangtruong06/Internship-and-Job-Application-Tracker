@@ -12,7 +12,7 @@
         My Applications
     </h1>
     <a href="{{ url_for('add') }}" class="btn btn-sm d-flex align-items-center gap-2"
-       style="background: #60a5fa; color: #0f172a; font-weight: 500; border-radius: 8px; padding: 8px 16px; font-size:1.3rem">
+       style="background: #0f172a; color: #e2e3e5; font-weight: 500; border-radius: 8px; padding: 8px 16px; font-size:1.3rem; border:2px solid #343741;">
         <i class="bi bi-plus-lg"></i> Add Job
     </a>
 </div>
@@ -108,7 +108,7 @@
                         <a href="/jobs/{{ job.id }}/edit" class="action-btn">
                             <i class="bi bi-pencil"></i>
                         </a>
-                        <form action="/jobs/{{ job.id }}/delete" method="POST" class="m-0 p-0">
+                        <form action="{{ url_for('delete_job', job_id=job.id) }}" method="POST" class="m-0 p-0">
                             <button type="submit" class="action-btn action-btn-danger">
                                 <i class="bi bi-trash"></i>
                             </button>

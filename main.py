@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, flash
+from flask import Flask, render_template, redirect, url_for, flash, request
 from models import db, User, Job
 from forms import Register, Login, AddJob
 from dotenv import load_dotenv
@@ -101,6 +101,14 @@ def add():
         return redirect(url_for('dashboard'))
     
     return render_template('add.html', form=form)
+
+@app.route('/delete-job', methods=['POST'])
+def delete_job():
+    job = db.get_or_404(Job, request.args.get('job_id'))
+    db.session.delete(job)
+    db.session.commit()
+    return redirect(url_for('dashboard'))
+
 
 @app.route('/logout')
 def logout():
