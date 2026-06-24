@@ -1,1 +1,98 @@
-{% extends 'base.html'%}
+{% extends 'base.html' %}
+{% block title %}Appli - Track every application{% endblock %}
+
+{% block content %}
+<div class="container">
+<div class="row align-items-center" style="min-height: 88vh;">
+  
+  <!-- Left: text -->
+  <div class="col-md-6 pe-md-5">
+    <h1 class="fw-semibold mb-3" style="color: #f8fafc; font-size: 2.5rem; line-height: 1.2;">
+      Apply without worry<br>
+      <span style="color: #60a5fa;">Track your progress today</span>
+    </h1>
+    <p class="mb-4" style="color: #64748b; font-size: 1rem; line-height: 1.7; max-width: 420px;">
+      Ditch the spreadsheet. Track applications, interviews, offers, and notes — all in one place
+
+    </p>
+    <div class="d-flex gap-3">
+      <a href="{{ url_for('register') }}" class="btn fw-semibold px-4"
+         style="background: #60a5fa; color: #0f172a;">
+        Get started
+      </a>
+      <a href="{{ url_for('login') }}" class="btn px-4"
+         style="background: transparent; color: #94a3b8; border: 0.5px solid #334155;">
+        Log in
+      </a>
+    </div>
+
+  </div>
+
+  <!-- Right: mock dashboard -->
+  <div class="col-md-6 mt-5 mt-md-0">
+    <div class="rounded-3 p-4" style="background: #1e293b; border: 0.5px solid #334155;">
+      
+      <!-- mock header -->
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <p class="mb-0 fw-semibold" style="color: #94a3b8; font-size: 0.75rem; letter-spacing: 0.05em;">
+        APPLICATIONS
+        </p>
+        
+      </div>
+
+      <!-- mock rows -->
+      <div class="d-flex flex-column gap-2">
+
+        <div class="d-flex justify-content-between align-items-center p-3 rounded-2"
+             style="background: #0f172a;">
+          <div>
+            <p class="mb-0 fw-semibold" style="color: #f8fafc; font-size: 0.875rem;">Google</p>
+            <p class="mb-0" style="color: #64748b; font-size: 0.75rem;">Software Developer</p>
+          </div>
+          <span class="badge" style="background: #60a5fa22; color: #60a5fa;">Interview</span>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center p-3 rounded-2"
+             style="background: #0f172a;">
+          <div>
+            <p class="mb-0 fw-semibold" style="color: #f8fafc; font-size: 0.875rem;">Stripe</p>
+            <p class="mb-0" style="color: #64748b; font-size: 0.75rem;">Product Management Intern</p>
+          </div>
+          <span class="badge" style="background: #34d39922; color: #34d399;">Applied</span>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center p-3 rounded-2"
+             style="background: #0f172a;">
+          <div>
+            <p class="mb-0 fw-semibold" style="color: #f8fafc; font-size: 0.875rem;">Airbnb</p>
+            <p class="mb-0" style="color: #64748b; font-size: 0.75rem;">Data Engineering Intern</p>
+          </div>
+          <span class="badge" style="background: #fbbf2422; color: #fbbf24;">Phone Screen</span>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center p-3 rounded-2"
+             style="background: #0f172a;">
+          <div>
+            <p class="mb-0 fw-semibold" style="color: #f8fafc; font-size: 0.875rem;">Shopify</p>
+            <p class="mb-0" style="color: #64748b; font-size: 0.75rem;">Backend Developer Intern</p>
+          </div>
+          <span class="badge" style="background: #34d39922; color: #34d399;">Applied</span>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center p-3 rounded-2"
+             style="background: #0f172a;">
+          <div>
+            <p class="mb-0 fw-semibold" style="color: #f8fafc; font-size: 0.875rem;">Meta</p>
+            <p class="mb-0" style="color: #64748b; font-size: 0.75rem;">Software Engineer Intern</p>
+          </div>
+          <span class="badge" style="background: #f8717122; color: #f87171;">Rejected</span>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</div>
+{% endblock %}
