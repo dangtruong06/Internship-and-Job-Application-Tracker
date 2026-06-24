@@ -102,9 +102,10 @@ def add():
     
     return render_template('add.html', form=form)
 
-@app.route('/delete-job', methods=['POST'])
-def delete_job():
-    job = db.get_or_404(Job, request.args.get('job_id'))
+@app.route('/delete-job/<int:job_id>', methods=['POST'])
+@login_required
+def delete_job(job_id):
+    job = db.get_or_404(Job, job_id)
     db.session.delete(job)
     db.session.commit()
     return redirect(url_for('dashboard'))
