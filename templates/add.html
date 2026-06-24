@@ -1,0 +1,39 @@
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+
+    {{ form.company.label }}
+    {{ form.company() }}
+
+    {{ form.role.label }}
+    {{ form.role() }}
+
+    {{ form.status.label }}
+    {{ form.status() }}
+
+    {{ form.url.label }}
+    {{ form.url() }}
+
+    {{ form.notes.label }}
+    {{ form.notes() }}
+
+    {{ form.date.label }}
+    {{ form.date() }}
+
+    <button type="submit">Add Job</button>
+</form>
+
+
+<!-- class Job(db.Model):
+    __tablename__ = 'jobs'
+    id:Mapped[int] = mapped_column(Integer, primary_key=True)
+    company:Mapped[str] = mapped_column(String(250), nullable=False)
+    role:Mapped[str] = mapped_column(String(250), nullable=False)
+    status:Mapped[str] = mapped_column(String(250), nullable=False)
+    url:Mapped[Optional[str]] = mapped_column(String(250))
+    notes:Mapped[Optional[str]] = mapped_column(Text)
+    applied_on:Mapped[Optional[date]] = mapped_column()
+
+    # Establish relationship between jobs to one user
+    user_id:Mapped[int] = mapped_column(ForeignKey('users.id'))
+    user:Mapped['User'] = relationship(back_populates='jobs') -->

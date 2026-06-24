@@ -1,0 +1,135 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}Dashboard — Appli{% endblock %}
+
+{% block nav_dashboard %}active{% endblock %}
+
+{% block content %}
+
+<!-- Topbar -->
+<div class="d-flex align-items-center justify-content-between mb-4">
+    <h1 class="fw-semibold m-0" style="font-size: 36px; color: #f1f5f9;">
+        My Applications
+    </h1>
+    <a href="{{ url_for('add') }}" class="btn btn-sm d-flex align-items-center gap-2"
+       style="background: #60a5fa; color: #0f172a; font-weight: 500; border-radius: 8px; padding: 8px 16px; font-size:1.3rem">
+        <i class="bi bi-plus-lg"></i> Add Job
+    </a>
+</div>
+
+<div class="row g-3 my-3">
+    <div class="col">
+        <div class="p-3 rounded-3" style="background: #1e293b;">
+            <div class="mb-1" style="font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">Total</div>
+            <div style="font-size: 28px; font-weight: 500; color: #f1f5f9;">{{ status_counts.total }}</div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="p-3 rounded-3" style="background: #1e293b;">
+            <div class="mb-1" style="font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">
+                <span style="display:inline-block; width:7px; height:7px; border-radius:50%; background:#4ade80; margin-right:5px; vertical-align:2px;"></span>Applied
+            </div>
+            <div style="font-size: 28px; font-weight: 500; color: #4ade80;">{{ status_counts.applied }}</div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="p-3 rounded-3" style="background: #1e293b;">
+            <div class="mb-1" style="font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">
+                <span style="display:inline-block; width:7px; height:7px; border-radius:50%; background:#60a5fa; margin-right:5px; vertical-align:2px;"></span>Interview
+            </div>
+            <div style="font-size: 28px; font-weight: 500; color: #60a5fa;">{{ status_counts.interview }}</div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="p-3 rounded-3" style="background: #1e293b;">
+            <div class="mb-1" style="font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">
+                <span style="display:inline-block; width:7px; height:7px; border-radius:50%; background:#facc15; margin-right:5px; vertical-align:2px;"></span>Phone Screen
+            </div>
+            <div style="font-size: 28px; font-weight: 500; color: #facc15;">{{ status_counts.screen }}</div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="p-3 rounded-3" style="background: #1e293b;">
+            <div class="mb-1" style="font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">
+                <span style="display:inline-block; width:7px; height:7px; border-radius:50%; background:#f87171; margin-right:5px; vertical-align:2px;"></span>Rejected
+            </div>
+            <div style="font-size: 28px; font-weight: 500; color: #f87171;">{{ status_counts.rejected }}</div>
+        </div>
+    </div>
+</div>
+
+<div class="rounded-3 p-4" style="background: #1e293b;">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <span style="font-size: 13px; color: #64748b;">{{ jobs|length }} application{{ 's' if jobs|length != 1 }}</span>
+    </div>
+
+    {% if jobs %}
+    <table class="table m-0 jobs-table" style="border-collapse: collapse;--bs-table-bg: transparent;">
+        <thead>
+            <tr style="border-bottom: 1px solid #334155; background: transparent;">
+                <th>Company</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Applied</th>
+                <th>Link</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for job in jobs %}
+            <tr style="border-bottom: 1px solid #334155; margin-bottom:5px">
+                <td style="color: #f1f5f9; font-weight: 500; font-size: 20px;">{{ job.company }}</td>
+                <td style="color: #cbd5e1; font-size: 20px;">{{ job.role }}</td>
+                <td>
+                    {% if job.status == 'Applied' %}
+                        <span class="badge-status" style="background-color: #2f6d48; color: #4ade80;">Applied</span>
+                    {% elif job.status == 'Interview' %}
+                        <span class="badge-status" style="background-color: #1e3a5f; color: #60a5fa;">Interview</span>
+                    {% elif job.status == 'Screen' %}
+                        <span class="badge-status" style="background-color: #422006; color: #facc15;">Phone Screen</span>
+                    {% elif job.status == 'Rejected' %}
+                        <span class="badge-status" style="background-color: #450a0a; color: #f87171;">Rejected</span>
+                    {% endif %}
+                </td>
+                <td style="color: #748daf; font-size: 20px;">
+                    {{ job.applied_on.strftime('%b %d, %Y') if job.applied_on else '—' }}
+                </td>
+                <td>
+                    {% if job.url %}
+                        <a href="{{ job.url }}" target="_blank" style="color: #60a5fa; font-size: 20px; text-decoration: none;">
+                            Link <i class="bi bi-arrow-up-right"></i>
+                        </a>
+                    {% else %}
+                        <span style="color: #334155; font-size: 13px;">—</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <div class="d-flex gap-2">
+                        <a href="/jobs/{{ job.id }}/edit" class="action-btn">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <form action="/jobs/{{ job.id }}/delete" method="POST" class="m-0 p-0">
+                            <button type="submit" class="action-btn action-btn-danger">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% else %}
+    <div class="text-center py-5">
+        <i class="bi bi-inbox" style="font-size: 40px; color: #334155;"></i>
+        <p class="mt-3 mb-3" style="color: #475569;">No applications yet.</p>
+        <a href="/jobs/add" class="btn btn-sm"
+           style="background: #60a5fa; color: #0f172a; font-weight: 500; border-radius: 8px;">
+            Add your first job
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

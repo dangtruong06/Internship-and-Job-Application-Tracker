@@ -1,8 +1,9 @@
 from flask import Flask, render_template, redirect, url_for, flash
 from models import db, User, Job
-from forms import Register, Login
+from forms import Register, Login, AddJob
 from dotenv import load_dotenv
-from flask_login import LoginManager, login_user, logout_user, current_user
+from flask_login import LoginManager, login_user, logout_user, current_user, login_required
+from collections import Counter
 import os
 
 load_dotenv()
@@ -35,7 +36,7 @@ def register():
 
         login_user(new_user)
 
-        return redirect(url_for('home'))
+        return redirect(url_for('dashboard'))
     
     return render_template('register.html', form=form)
 
@@ -51,13 +52,55 @@ def login():
             flash('Incorrect password', 'danger')
         else:
             login_user(user)
-            return redirect(url_for('home'))
+            return redirect(url_for('dashboard'))
     
     return render_template('login.html', form=form)
 
 @app.route('/')
 def home():
+    if current_user.is_authenticated:
+        return redirect(url_for('dashboard'))
     return render_template('index.html')
+
+# Dashboard displays jobs of current logged in user
+@app.route('/dashboard')
+@login_required
+def dashboard():
+    jobs = db.session.execute(db.select(Job
+                            ).where(Job.user_id == current_user.id
+                            )).scalars().all()
+    
+    counts = Counter(job.status for job in jobs)
+    
+    status_counts = {
+        'total':len(jobs),
+        'applied':counts['Applied'],
+        'interview':counts['Interview'],
+        'rejected':counts['Rejected'],
+        'screen':counts['Screen']
+    }
+
+    return render_template('dashboard.html', jobs=jobs, status_counts=status_counts)
+
+@app.route('/add-job', methods=['POST', 'GET'])
+@login_required
+def add():
+    form = AddJob()
+
+    if form.validate_on_submit():
+        new_job = Job(company=form.company.data,
+                      role=form.role.data,
+                      status=form.status.data,
+                      url=form.url.data,
+                      notes=form.notes.data,
+                      applied_on=form.date.data,
+                      user_id=current_user.id)
+        
+        db.session.add(new_job)
+        db.session.commit()
+        return redirect(url_for('dashboard'))
+    
+    return render_template('add.html', form=form)
 
 @app.route('/logout')
 def logout():
