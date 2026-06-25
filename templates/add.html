@@ -1,39 +1,73 @@
+{% extends "base_dashboard.html" %}
 
-<form method="POST">
-    {{ form.hidden_tag() }}
+{% block title %}Add Job — Appli{% endblock %}
 
-    {{ form.company.label }}
-    {{ form.company() }}
+{% block nav_add %}active{% endblock %}
 
-    {{ form.role.label }}
-    {{ form.role() }}
+{% block content %}
 
-    {{ form.status.label }}
-    {{ form.status() }}
+<div class="d-flex align-items-center justify-content-between mb-4">
+    <h1 class="fw-semibold m-0" style="font-size: 24px; color: #f1f5f9;">
+        {{ 'Edit Job' if job else 'Add Job' }}
+    </h1>
 
-    {{ form.url.label }}
-    {{ form.url() }}
+    <a href="{{ url_for('dashboard') }}" style="color: #7f8ea2; font-size: 14px; text-decoration: none;">
+        <i class="bi bi-arrow-left me-1"></i> Back to dashboard
+    </a>
+</div>
 
-    {{ form.notes.label }}
-    {{ form.notes() }}
+<div class="d-flex justify-content-center align-items-start" style="min-height: 70vh; padding-top: 40px;">
+<div class="card rounded-3 p-4" style="background: #1e293b; max-width: 560px; border: none;">
+    <form method="POST" action="{{ url_for('edit_job', job_id=job.id) if job else url_for('add') }}" id="add-job-form">
+        {{ form.hidden_tag() }}
 
-    {{ form.date.label }}
-    {{ form.date() }}
+        <div class="row g-3 mb-3">
+            <div class="col">
+                {{ form.company.label(class="form-label", style="color: #64748b; font-size: 12px;") }}
+                {{ form.company(class="form-control", placeholder="e.g. Stripe") }}
 
-    <button type="submit">Add Job</button>
-</form>
+            </div>
+            <div class="col">
+                {{ form.role.label(class="form-label", style="color: #64748b; font-size: 12px;") }}
+                {{ form.role(class="form-control", placeholder="e.g. Backend Intern") }}
 
+            </div>
+        </div>
 
-<!-- class Job(db.Model):
-    __tablename__ = 'jobs'
-    id:Mapped[int] = mapped_column(Integer, primary_key=True)
-    company:Mapped[str] = mapped_column(String(250), nullable=False)
-    role:Mapped[str] = mapped_column(String(250), nullable=False)
-    status:Mapped[str] = mapped_column(String(250), nullable=False)
-    url:Mapped[Optional[str]] = mapped_column(String(250))
-    notes:Mapped[Optional[str]] = mapped_column(Text)
-    applied_on:Mapped[Optional[date]] = mapped_column()
+        <div class="row g-3 mb-3">
+            <div class="col">
+                {{ form.status.label(class="form-label", style="color: #64748b; font-size: 12px;") }}
+                {{ form.status(class="form-select") }}
+            </div>
+            <div class="col">
+                {{ form.applied_on.label(class="form-label", style="color: #64748b; font-size: 12px;") }}
+                {{ form.applied_on(class="form-control") }}
+            </div>
+        </div>
 
-    # Establish relationship between jobs to one user
-    user_id:Mapped[int] = mapped_column(ForeignKey('users.id'))
-    user:Mapped['User'] = relationship(back_populates='jobs') -->
+        <div class="mb-3">
+            {{ form.url.label(class="form-label", style="color: #64748b; font-size: 12px;") }}
+            {{ form.url(class="form-control", placeholder="https://...") }}
+ 
+        </div>
+
+        <div class="mb-4">
+            {{ form.notes.label(class="form-label", style="color: #64748b; font-size: 12px;") }}
+            {{ form.notes(class="form-control", placeholder="Any notes...", rows=3) }}
+        </div>
+
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn flex-grow-1"
+                    style="background: #60a5fa; color: #0f172a; font-weight: 500; border-radius: 8px; padding: 10px;">
+                {{ 'Save Changes' if job else 'Add Job' }} 
+            </button>
+            <button type="reset" class="btn"
+                    style="background: transparent; color: #64748b; border: 1px solid #334155; border-radius: 8px; padding: 10px 20px;">
+                Reset
+            </button>
+        </div>
+
+    </form>
+</div>
+</div>
+{% endblock %}

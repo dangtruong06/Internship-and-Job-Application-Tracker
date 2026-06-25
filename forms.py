@@ -24,5 +24,5 @@ class AddJob(FlaskForm):
                                             validators=[DataRequired()])
     url = StringField('URL', validators=[DataRequired()])
     notes = StringField('Notes', validators=[Optional()])
-    date = DateField('Applied On', validators=[Optional()])
+    applied_on = DateField('Applied On', validators=[Optional()])
 
