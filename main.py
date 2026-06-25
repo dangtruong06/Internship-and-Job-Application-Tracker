@@ -126,8 +126,19 @@ def edit_job(job_id):
         job.applied_on = form.applied_on.data
         db.session.commit()
 
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('view_job', job_id=job.id))
     return render_template('add.html', form=form, job=job)
+
+@app.route('/job/<int:job_id>')
+@login_required
+def view_job(job_id):
+    job = db.get_or_404(Job, job_id)
+
+    if current_user.id != job.user_id:
+        return redirect(url_for('dashboard'))
+    
+    return render_template('job.html', job=job)
+
 
 @app.route('/delete-job/<int:job_id>', methods=['POST'])
 @login_required

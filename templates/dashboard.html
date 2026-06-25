@@ -81,7 +81,8 @@
         </thead>
         <tbody>
             {% for job in jobs %}
-            <tr style="border-bottom: 1px solid #334155; margin-bottom:5px">
+            <tr style="border-bottom: 1px solid #334155; margin-bottom:5px" class="clickable-row" 
+                onclick="window.location='{{ url_for('view_job', job_id=job.id) }}'; ">
                 <td style="color: #f1f5f9; font-weight: 500; font-size: 20px;">{{ job.company }}</td>
                 <td style="color: #cbd5e1; font-size: 20px;">{{ job.role }}</td>
                 <td>

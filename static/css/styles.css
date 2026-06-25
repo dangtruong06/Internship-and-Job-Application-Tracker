@@ -112,3 +112,11 @@ table.jobs-table th {
 .form-control::placeholder {
     color: #475569 !important;
 }
+
+.clickable-row {
+    cursor: pointer;
+}
+
+.clickable-row:hover {
+    background-color: #2b3e5d;
+}
