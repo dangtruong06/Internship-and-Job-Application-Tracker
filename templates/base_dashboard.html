@@ -31,23 +31,15 @@
            class="sidebar-icon {% block nav_add %}{% endblock %}">
             <i class="bi bi-plus-circle"></i>
         </a>
-        <a href="#" title="Calendar"
-           class="sidebar-icon">
-            <i class="bi bi-calendar3"></i>
-        </a>
 
         <!-- Bottom nav icons -->
         <div class="mt-auto d-flex flex-column align-items-center gap-3">
-            <a href="#" title="Settings" class="sidebar-icon">
-                <i class="bi bi-gear"></i>
-            </a>
             <a href="{{ url_for('logout')}}" title="Log out" class="sidebar-icon">
                 <i class="bi bi-box-arrow-right"></i>
             </a>
         </div>
     </div>
 
-    <!-- Main content (offset by sidebar width) -->
     <div style="margin-left: 120px; flex: 1; padding: 28px 28px;">
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}

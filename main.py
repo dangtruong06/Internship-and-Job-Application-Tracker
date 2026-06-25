@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, flash, request
+from flask import Flask, render_template, redirect, url_for, flash
 from models import db, User, Job
 from forms import Register, Login, AddJob
 from dotenv import load_dotenv
@@ -26,6 +26,11 @@ def load_user(user_id):
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = Register()
+
+    email_check = db.session.execute(db.select(User).where(User.email == form.email.data)).scalar()
+    if email_check:
+        flash('Email is already registered! Please log in', 'danger')
+        return redirect(url_for('register'))
 
     if form.validate_on_submit():
         new_user = User(name=form.name.data,
@@ -68,7 +73,7 @@ def home():
 def dashboard():
     jobs = db.session.execute(db.select(Job
                             ).where(Job.user_id == current_user.id
-                            )).scalars().all()
+                            ).order_by(Job.applied_on.desc())).scalars().all()
     
     counts = Counter(job.status for job in jobs)
     
@@ -93,7 +98,7 @@ def add():
                       status=form.status.data,
                       url=form.url.data,
                       notes=form.notes.data,
-                      applied_on=form.date.data,
+                      applied_on=form.applied_on.data,
                       user_id=current_user.id)
         
         db.session.add(new_job)
@@ -102,16 +107,54 @@ def add():
     
     return render_template('add.html', form=form)
 
+@app.route('/edit-job/<int:job_id>', methods=['POST', 'GET'])
+@login_required
+def edit_job(job_id):
+    job = db.get_or_404(Job, job_id)
+
+    if current_user.id != job.user_id:
+        return redirect(url_for('dashboard'))
+    
+    form = AddJob(obj=job)
+
+    if form.validate_on_submit():
+        job.company = form.company.data
+        job.role = form.role.data
+        job.status = form.status.data
+        job.url = form.url.data
+        job.notes = form.notes.data
+        job.applied_on = form.applied_on.data
+        db.session.commit()
+
+        return redirect(url_for('view_job', job_id=job.id))
+    return render_template('add.html', form=form, job=job)
+
+@app.route('/job/<int:job_id>')
+@login_required
+def view_job(job_id):
+    job = db.get_or_404(Job, job_id)
+
+    if current_user.id != job.user_id:
+        return redirect(url_for('dashboard'))
+    
+    return render_template('job.html', job=job)
+
+
 @app.route('/delete-job/<int:job_id>', methods=['POST'])
 @login_required
 def delete_job(job_id):
     job = db.get_or_404(Job, job_id)
+
+    if current_user.id != job.user_id:
+        return redirect(url_for('dashboard'))
+    
     db.session.delete(job)
     db.session.commit()
     return redirect(url_for('dashboard'))
 
 
 @app.route('/logout')
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('home'))
