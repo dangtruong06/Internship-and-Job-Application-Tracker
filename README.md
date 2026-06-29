@@ -105,8 +105,8 @@ A `.env.example` file is included in the repo with placeholder values.
 ---
 
 ## Screenshots
+<img width="1698" height="864" alt="Screenshot 2026-06-29 at 10 17 38 AM" src="https://github.com/user-attachments/assets/1754fee3-a9dd-442a-a792-1c68bdced645" />
 
-> Add screenshots here once the app is deployed or finalized.
 <img width="1701" height="963" alt="Screenshot 2026-06-29 at 10 16 47 AM" src="https://github.com/user-attachments/assets/67e5e064-3c91-429b-90ba-7d649a40fa6d" />
 
 
